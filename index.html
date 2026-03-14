@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TutionQuiz — Learn & Play</title>
+<title>Tuition Quiz</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -288,27 +288,11 @@ body::before {
 .gk-q-card.correct-card { border-color: rgba(61,220,176,0.5); }
 .gk-q-card.wrong-card   { border-color: rgba(255,107,138,0.5); }
 
-.gk-q-image-wrap {
-  position: relative; width: 100%; height: 200px; overflow: hidden;
-  background: var(--surface);
-  display: none;
-}
-.gk-q-image-wrap.has-image { display: block; }
-.gk-q-image {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.4s ease;
-}
-.gk-q-image-wrap:hover .gk-q-image { transform: scale(1.03); }
-.gk-q-img-credit {
-  position: absolute; bottom: 6px; right: 8px;
-  font-size: 0.62rem; color: rgba(255,255,255,0.55);
-  font-weight: 600; pointer-events: none;
-}
-.img-loading {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 2rem; color: var(--muted);
-  animation: pulse 1.2s ease infinite;
-}
+
+
+
+
+
 
 .gk-q-body { padding: 24px 22px 20px; }
 .gk-q-meta { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -364,17 +348,7 @@ body::before {
 
 .exp-text { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
 
-/* video embed */
-.exp-video-wrap {
-  position: relative; width: 100%; padding-top: 56.25%;
-  border-radius: 10px; overflow: hidden; margin-top: 8px;
-  display: none;
-}
-.exp-video-wrap.has-video { display: block; }
-.exp-video-wrap iframe {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  border: none;
-}
+
 
 /* ══════════════════════════════════════════
    SHARED BUTTONS
@@ -490,6 +464,20 @@ kbd {
 /* ══════════════════════════════════════════
    ANIMATIONS
 ══════════════════════════════════════════ */
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--card); border: 1.5px solid var(--accent1);
+  border-radius: 99px; padding: 10px 22px;
+  font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--text);
+  box-shadow: 0 6px 24px rgba(124,92,252,0.3);
+  z-index: 9999; opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pop    { from { transform: scale(0.93); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes bounce { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
@@ -502,7 +490,7 @@ kbd {
 <!-- SITE HEADER -->
 <div class="site-header">
   <div class="site-logo">Tuition<span>Quiz</span> ✦</div>
-  <div class="site-tagline">Learn smarter · Play harder</div>
+  <div class="site-tagline">Your smart tuition companion 🎓</div>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -511,13 +499,22 @@ kbd {
 <div id="home-page" class="page active">
   <div style="max-width:680px;margin:0 auto;padding:0 16px 60px;">
     <div class="home-greeting">Choose your quiz section 👇</div>
+    <div style="text-align:center;margin-bottom:16px;margin-top:-8px;">
+      <span style="font-size:0.72rem;color:var(--muted);font-weight:700;">
+        Shortcuts: &nbsp;
+        <kbd style="background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.7rem;color:var(--accent2);">Ctrl+1</kbd> Tables &nbsp;
+        <kbd style="background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.7rem;color:var(--accent2);">Ctrl+2</kbd> GK &nbsp;
+        <kbd style="background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.7rem;color:var(--accent2);">Ctrl+0</kbd> Home &nbsp;
+        <kbd style="background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:2px 7px;font-size:0.7rem;color:var(--accent4);">Ctrl+`</kbd> Restart
+      </span>
+    </div>
     <div class="section-cards">
 
       <div class="section-card card-s1" onclick="goSection('tables')">
         <div class="card-badge">Section 1</div>
         <span class="card-icon">✖️</span>
         <div class="card-title">Times Tables</div>
-        <div class="card-desc">Practice multiplication with a type-the-answer quiz. Pick any range!</div>
+        <div class="card-desc">Adaptive multiplication quiz — starts Easy, gets harder as you improve!</div>
         <div class="card-topics">
           <span class="topic-pill">×1 to ×10</span>
           <span class="topic-pill">Any range</span>
@@ -530,7 +527,7 @@ kbd {
         <div class="card-badge">Section 2</div>
         <span class="card-icon">🌍</span>
         <div class="card-title">General Knowledge</div>
-        <div class="card-desc">India-focused AI quiz — geography, history, science, culture & more!</div>
+        <div class="card-desc">India-focused AI quiz — adaptive difficulty, explanations & answer visuals!</div>
         <div class="card-topics">
           <span class="topic-pill">🇮🇳 India First</span>
           <span class="topic-pill">80% India</span>
@@ -564,7 +561,7 @@ kbd {
             <div class="range-sep">→</div>
             <div class="range-field">
               <span class="sub-label">To</span>
-              <input type="number" id="t-to" class="range-input" value="20" min="1" max="9999">
+              <input type="number" id="t-to" class="range-input" value="12" min="1" max="9999">
             </div>
           </div>
           <div class="range-hint">
@@ -574,6 +571,8 @@ kbd {
         </div>
         <button class="btn-yellow" id="t-start-btn" onclick="tablesStart()">✦ Start Quiz</button>
         <div class="enter-hint">or press <kbd>Enter ↵</kbd></div>
+        <div id="t-history-info" style="text-align:center;margin-top:10px;font-size:0.75rem;color:var(--muted);font-weight:700;"></div>
+        <button onclick="clearTablesHistory()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:700;cursor:pointer;margin-top:4px;width:100%;text-align:center;text-decoration:underline;">🗑️ Clear question history</button>
         <div class="error-box" id="t-error"></div>
       </div>
     </div>
@@ -582,7 +581,11 @@ kbd {
     <div id="tables-quiz" style="display:none">
       <div class="quiz-header">
         <div class="progress-wrap">
-          <div class="progress-label">Question <span id="t-qnum">1</span> of <span id="t-qtotal">?</span></div>
+          <div class="progress-label" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span>Question <span id="t-qnum">1</span> of <span id="t-qtotal">?</span></span>
+            <span id="t-diff-badge" style="font-size:0.65rem;background:rgba(247,201,72,0.18);color:var(--accent2);border:1px solid rgba(247,201,72,0.3);border-radius:99px;padding:2px 8px;font-weight:800;">Level: Easy 🟢</span>
+            <span id="t-streak" style="display:none;font-size:0.65rem;background:rgba(255,107,138,0.18);color:var(--accent4);border:1px solid rgba(255,107,138,0.3);border-radius:99px;padding:2px 8px;font-weight:800;"></span>
+          </div>
           <div class="progress-bar"><div class="progress-fill pf-tables" id="t-pfill" style="width:0%"></div></div>
         </div>
         <div class="score-badge score-s1">
@@ -637,7 +640,7 @@ kbd {
     <div id="gk-setup">
       <div class="gk-setup-card">
         <div class="gk-setup-title">🌍 General Knowledge Quiz</div>
-        <div class="gk-setup-sub">🇮🇳 India-focused · AI-powered · Images, explanations & videos</div>
+        <div class="gk-setup-sub">🇮🇳 India-focused · AI-powered · Adaptive Difficulty</div>
 
         <span class="field-label" style="display:block;margin-bottom:12px;">Choose Topics</span>
         <div class="topic-grid">
@@ -675,6 +678,8 @@ kbd {
 
         <button class="btn-purple" id="gk-start-btn" onclick="gkStart()">✦ Generate Quiz</button>
         <div class="enter-hint">AI will generate fresh questions each time!</div>
+        <div id="gk-history-info" style="text-align:center;margin-top:10px;font-size:0.75rem;color:var(--muted);font-weight:700;"></div>
+        <button onclick="clearGKHistory()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:700;cursor:pointer;margin-top:4px;width:100%;text-align:center;text-decoration:underline;">🗑️ Clear question history</button>
         <div class="error-box" id="gk-error"></div>
       </div>
     </div>
@@ -690,7 +695,11 @@ kbd {
     <div id="gk-quiz" style="display:none">
       <div class="quiz-header">
         <div class="progress-wrap">
-          <div class="progress-label">Question <span id="gk-qnum">1</span> of <span id="gk-qtotal">?</span></div>
+          <div class="progress-label" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span>Question <span id="gk-qnum">1</span> of <span id="gk-qtotal">?</span></span>
+            <span id="gk-diff-badge" style="font-size:0.65rem;background:rgba(124,92,252,0.18);color:var(--accent1);border:1px solid rgba(124,92,252,0.3);border-radius:99px;padding:2px 8px;font-weight:800;">Level: Easy 🟢</span>
+            <span id="gk-streak" style="display:none;font-size:0.65rem;background:rgba(247,201,72,0.18);color:var(--accent2);border:1px solid rgba(247,201,72,0.3);border-radius:99px;padding:2px 8px;font-weight:800;"></span>
+          </div>
           <div class="progress-bar"><div class="progress-fill pf-gk" id="gk-pfill" style="width:0%"></div></div>
         </div>
         <div class="score-badge score-s2">
@@ -700,11 +709,6 @@ kbd {
       </div>
 
       <div class="gk-q-card" id="gk-qcard">
-        <div class="gk-q-image-wrap" id="gk-img-wrap">
-          <div class="img-loading" id="gk-img-loading">🖼️</div>
-          <img id="gk-img" class="gk-q-image" src="" alt="" onload="imgLoaded()" onerror="imgError()">
-          <span class="gk-q-img-credit" id="gk-img-credit"></span>
-        </div>
         <div class="gk-q-body">
           <div class="gk-q-meta">
             <span class="gk-badge gk-badge-topic" id="gk-topic-badge">Topic</span>
@@ -721,8 +725,9 @@ kbd {
           <span class="exp-verdict" id="gk-exp-verdict">Correct!</span>
         </div>
         <div class="exp-text" id="gk-exp-text"></div>
-        <div class="exp-video-wrap" id="gk-video-wrap">
-          <iframe id="gk-video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div id="gk-answer-image" style="display:none;text-align:center;margin-top:14px;padding:16px;background:rgba(124,92,252,0.08);border-radius:12px;border:1.5px solid rgba(124,92,252,0.2);">
+          <div id="gk-answer-emoji" style="font-size:5rem;line-height:1.2;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(124,92,252,0.4));"></div>
+          <div id="gk-answer-label" style="font-size:0.78rem;color:var(--muted);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;"></div>
         </div>
       </div>
 
@@ -743,6 +748,7 @@ kbd {
           <div class="stat-box stat-pct"><div class="num" id="gk-sp">0%</div><div class="lbl">Score</div></div>
         </div>
         <div class="result-recap recap-purple" id="gk-recap"></div>
+        <div id="gk-next-level" style="display:none;font-size:0.84rem;font-weight:700;text-align:center;margin-top:8px;margin-bottom:14px;"></div>
       </div>
       <div class="result-actions">
         <button class="btn-purple" id="gk-retry" onclick="gkRetry()" style="margin-top:0">🔁 New Quiz</button>
@@ -752,6 +758,8 @@ kbd {
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 // ══════════════════════════════════════════
@@ -767,6 +775,57 @@ let tScreen = 'setup';    // setup | quiz | results
 let gkQuestions = [], gkCurrent = 0, gkScore = 0, gkAnswered = false;
 let gkScreen = 'setup';   // setup | loading | quiz | results
 
+// Adaptive difficulty
+let gkDifficulty    = 1;    // 1–5
+let gkStreak        = 0;    // consecutive correct answers
+let gkSessionTotal  = 0;    // total answered this session
+let gkSessionScore  = 0;    // correct this session (cumulative across rounds)
+
+// Question history — prevents any repeat questions ever
+// Load seen questions from localStorage (persists across page refreshes)
+function loadSet(key) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? new Set(JSON.parse(saved)) : new Set();
+  } catch(e) { return new Set(); }
+}
+
+function saveSet(key, set) {
+  try { localStorage.setItem(key, JSON.stringify([...set])); } catch(e) {}
+}
+
+let gkAskedQuestions = loadSet('tq_gk_seen');   // GK seen questions
+let tAskedEquations  = loadSet('tq_t_seen');    // Tables seen equations
+
+
+// ── History management ─────────────────────────────────────────────────
+function clearTablesHistory() {
+  tAskedEquations.clear();
+  saveSet('tq_t_seen', tAskedEquations);
+  updateHistoryInfo();
+  showToast('🗑️ Tables history cleared!');
+}
+
+function clearGKHistory() {
+  gkAskedQuestions.clear();
+  saveSet('tq_gk_seen', gkAskedQuestions);
+  updateHistoryInfo();
+  showToast('🗑️ GK history cleared!');
+}
+
+function updateHistoryInfo() {
+  const tEl = document.getElementById('t-history-info');
+  const gEl = document.getElementById('gk-history-info');
+  if (tEl) {
+    const n = tAskedEquations.size;
+    tEl.textContent = n > 0 ? n + ' equations seen this session — no repeats!' : 'No history yet.';
+  }
+  if (gEl) {
+    const n = gkAskedQuestions.size;
+    gEl.textContent = n > 0 ? n + ' questions seen — AI will avoid all of them!' : 'No history yet.';
+  }
+}
+
 // ══════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════
@@ -775,6 +834,7 @@ function goSection(s) {
   document.getElementById(s + '-page').classList.add('active');
   appScreen = s;
   window.scrollTo(0, 0);
+  setTimeout(updateHistoryInfo, 50);
 }
 
 function goHome() {
@@ -796,14 +856,73 @@ function shuffle(arr) {
   return a;
 }
 
+// Tables difficulty: 1=Easy(×1-5), 2=Medium(×1-10), 3=Hard(×1-12+mixed), 4=Expert(3-digit), 5=Master(mixed ops)
+let tDifficulty = 1;
+let tStreak = 0;
+let tWrong = 0;
+
 function tablesGenerate(from, to) {
   const qs = [];
-  for (let x = from; x <= to; x++)
-    for (let y = 1; y <= 10; y++) {
-      const flip = Math.random() > 0.5;
-      qs.push({ display: flip ? `${y} × ${x}` : `${x} × ${y}`, answer: String(x * y) });
+  if (tDifficulty <= 2) {
+    // Easy/Medium: standard tables, Y up to 5 or 10
+    const yMax = tDifficulty === 1 ? 5 : 10;
+    for (let x = from; x <= to; x++)
+      for (let y = 1; y <= yMax; y++) {
+        const flip = Math.random() > 0.5;
+        qs.push({ display: flip ? `${y} × ${x}` : `${x} × ${y}`, answer: String(x * y) });
+      }
+  } else if (tDifficulty === 3) {
+    // Hard: Y up to 12, some 2-digit Y
+    for (let x = from; x <= to; x++)
+      for (let y = 1; y <= 12; y++) {
+        const flip = Math.random() > 0.5;
+        qs.push({ display: flip ? `${y} × ${x}` : `${x} × ${y}`, answer: String(x * y) });
+      }
+  } else if (tDifficulty === 4) {
+    // Expert: large numbers, Y up to 20
+    for (let x = from; x <= to; x++)
+      for (let y = 1; y <= 20; y++) {
+        const flip = Math.random() > 0.5;
+        qs.push({ display: flip ? `${y} × ${x}` : `${x} × ${y}`, answer: String(x * y) });
+      }
+  } else {
+    // Master (5): mixed operations — multiply, add, subtract
+    for (let x = from; x <= to; x++) {
+      for (let y = 1; y <= 10; y++) {
+        const op = Math.floor(Math.random() * 3);
+        if (op === 0) {
+          const flip = Math.random() > 0.5;
+          qs.push({ display: flip ? `${y} × ${x}` : `${x} × ${y}`, answer: String(x * y) });
+        } else if (op === 1) {
+          qs.push({ display: `${x * y} ÷ ${x}`, answer: String(y) });
+        } else {
+          const a = x * y, b = Math.floor(Math.random() * 20) + 1;
+          const add = Math.random() > 0.5;
+          qs.push({ display: add ? `${a} + ${b}` : `${a} - ${b}`, answer: String(add ? a+b : a-b) });
+        }
+      }
     }
-  return shuffle(qs);
+  }
+  // Filter out equations already seen this session
+  const filtered = qs.filter(q => !tAskedEquations.has(q.display));
+  // If everything's been asked, reset history for this range and return all
+  if (filtered.length === 0) {
+    tAskedEquations.clear();
+    saveSet('tq_t_seen', tAskedEquations);
+    return shuffle(qs);
+  }
+  return shuffle(filtered);
+}
+
+function tUpdateDiffBadge() {
+  const labels = ['','Easy 🟢','Medium 🟡','Hard 🟠','Expert 🔴','Master 🔥'];
+  const el = document.getElementById('t-diff-badge');
+  if (el) el.textContent = `Level: ${labels[tDifficulty]}`;
+  const st = document.getElementById('t-streak');
+  if (st) {
+    if (tStreak >= 3) { st.textContent = `🔥 ${tStreak} streak!`; st.style.display = 'inline-block'; }
+    else { st.style.display = 'none'; }
+  }
 }
 
 function tablesStart() {
@@ -814,7 +933,7 @@ function tablesStart() {
   if (isNaN(from) || isNaN(to) || from < 1 || to < 1) { err.textContent = '⚠️ Enter valid numbers.'; err.style.display = 'block'; return; }
   if (from > to) { err.textContent = '⚠️ "From" must be ≤ "To".'; err.style.display = 'block'; return; }
   tQuestions = tablesGenerate(from, to);
-  tCurrent = 0; tScore = 0; tAnswered = false;
+  tCurrent = 0; tScore = 0; tAnswered = false; tStreak = 0; tWrong = 0;
   document.getElementById('t-qtotal').textContent = tQuestions.length;
   tShowScreen('quiz');
   tRender();
@@ -833,6 +952,8 @@ function tRender() {
   document.getElementById('t-pfill').style.width = `${(tCurrent / tQuestions.length) * 100}%`;
   document.getElementById('t-score').textContent = tScore;
   document.getElementById('t-equation').textContent = q.display;
+  tAskedEquations.add(q.display);
+  saveSet('tq_t_seen', tAskedEquations);
   const card = document.getElementById('t-qcard');
   card.classList.remove('correct-card', 'wrong-card');
   const inp = document.getElementById('t-input');
@@ -843,6 +964,7 @@ function tRender() {
   document.getElementById('t-next').style.display = 'none';
   document.getElementById('t-nexthint').style.display = 'none';
   tAnswered = false;
+  tUpdateDiffBadge();
   setTimeout(() => inp.focus(), 60);
 }
 
@@ -858,15 +980,30 @@ function tablesSubmit() {
   const card = document.getElementById('t-qcard');
   const fb = document.getElementById('t-feedback');
   if (val === q.answer) {
-    inp.classList.add('correct-input'); card.classList.add('correct-card'); tScore++;
+    inp.classList.add('correct-input'); card.classList.add('correct-card'); tScore++; tStreak++;
     document.getElementById('t-score').textContent = tScore;
-    fb.innerHTML = `✅ Correct! &nbsp; ${q.display} = ${q.answer}`;
+    const streakMsg = tStreak >= 3 ? ` 🔥 ${tStreak} in a row!` : '';
+    fb.innerHTML = `✅ Correct! &nbsp; ${q.display} = ${q.answer}${streakMsg}`;
     fb.className = 'error-box'; fb.style.cssText = 'display:block;background:rgba(61,220,176,0.12);border:1.5px solid rgba(61,220,176,0.35);color:var(--correct);font-size:1rem;';
+    // Level up after 5 consecutive correct answers
+    if (tStreak > 0 && tStreak % 5 === 0 && tDifficulty < 5) {
+      tDifficulty++;
+      const labels = ['','Easy 🟢','Medium 🟡','Hard 🟠','Expert 🔴','Master 🔥'];
+      showToast(`🔼 Level up! Now: ${labels[tDifficulty]}`);
+    }
   } else {
     inp.classList.add('wrong-input'); card.classList.add('wrong-card');
+    tStreak = 0; tWrong++;
     fb.innerHTML = `❌ Not quite! &nbsp; ${q.display} = ${q.answer}`;
     fb.className = 'error-box'; fb.style.cssText = 'display:block;background:rgba(255,107,138,0.1);border:1.5px solid rgba(255,107,138,0.3);color:var(--wrong);font-size:1rem;';
+    // Level down after 3 consecutive wrong
+    if (tWrong >= 3 && tDifficulty > 1) {
+      tDifficulty--; tWrong = 0;
+      const labels = ['','Easy 🟢','Medium 🟡','Hard 🟠','Expert 🔴','Master 🔥'];
+      showToast(`🔽 Adjusting to ${labels[tDifficulty]}`);
+    }
   }
+  tUpdateDiffBadge();
   document.getElementById('t-next').style.display = 'block';
   document.getElementById('t-nexthint').style.display = 'block';
 }
@@ -898,7 +1035,21 @@ function tShowResults() {
   setTimeout(() => document.getElementById('t-retry').focus(), 60);
 }
 
-function tablesRetry()    { tQuestions = shuffle(tQuestions); tCurrent = 0; tScore = 0; tAnswered = false; tShowScreen('quiz'); tRender(); }
+function tablesRetry() {
+  const from = parseInt(document.getElementById('t-from').value);
+  const to   = parseInt(document.getElementById('t-to').value);
+  tQuestions = tablesGenerate(from, to);
+  tCurrent = 0; tScore = 0; tAnswered = false; tStreak = 0; tWrong = 0;
+  document.getElementById('t-qtotal').textContent = tQuestions.length;
+  tShowScreen('quiz'); tRender();
+}
+function tablesHardReset() {
+  // Full restart — go back to setup screen, clear everything
+  tQuestions = []; tCurrent = 0; tScore = 0; tAnswered = false; tDifficulty = 1; tStreak = 0; tWrong = 0; tAskedEquations.clear(); saveSet('tq_t_seen', tAskedEquations);
+  tShowScreen('setup');
+  setTimeout(() => document.getElementById('t-from').focus(), 60);
+  showToast('♻️ Tables quiz reset!');
+}
 function tablesNewSetup() { tShowScreen('setup'); setTimeout(() => document.getElementById('t-from').focus(), 60); }
 
 // ══════════════════════════════════════════
@@ -912,14 +1063,7 @@ function getSelectedTopics() {
   return [...document.querySelectorAll('.topic-card.selected')].map(el => el.dataset.topic);
 }
 
-function imgLoaded() {
-  document.getElementById('gk-img-loading').style.display = 'none';
-  document.getElementById('gk-img').style.display = 'block';
-}
 
-function imgError() {
-  document.getElementById('gk-img-wrap').classList.remove('has-image');
-}
 
 async function gkStart() {
   const topics = getSelectedTopics();
@@ -934,7 +1078,7 @@ async function gkStart() {
   document.getElementById('gk-loading-sub').textContent = `Generating ${qty} questions on: ${topics.join(', ')}…`;
 
   try {
-    gkQuestions = await fetchGKQuestions(topics, qty);
+    gkQuestions = await fetchGKQuestions(topics, qty, gkDifficulty, gkAskedQuestions);
     gkCurrent = 0; gkScore = 0; gkAnswered = false;
     document.getElementById('gk-qtotal').textContent = gkQuestions.length;
     document.getElementById('gk-loading').classList.remove('active');
@@ -950,68 +1094,67 @@ async function gkStart() {
   }
 }
 
-async function fetchGKQuestions(topics, qty) {
+async function fetchGKQuestions(topics, qty, difficultyLevel, seenQs) {
   const indiaQty = Math.round(qty * 0.80);
   const worldQty = qty - indiaQty;
 
   const indiaPool = [
-    // Geography
     "states and their capitals", "rivers (Ganga, Yamuna, Godavari, Krishna, Brahmaputra)",
     "mountain ranges (Himalayas, Western Ghats, Vindhyas)", "union territories",
     "national parks and wildlife sanctuaries", "dams and reservoirs",
-    // History
     "freedom fighters (Gandhi, Bhagat Singh, Subhas Chandra Bose, Rani Laxmibai)",
     "Indian independence movement", "ancient empires (Maurya, Gupta, Mughal, Maratha)",
     "famous battles in Indian history",
-    // Science & Space
     "ISRO missions (Chandrayaan, Mangalyaan, Gaganyaan)", "Indian scientists (CV Raman, APJ Abdul Kalam, Homi Bhabha)",
-    "inventions and discoveries by Indians",
-    // Culture & Symbols
     "national symbols (bird, animal, flower, fruit, tree, sport)", "Indian festivals",
-    "classical dances (Bharatanatyam, Kathak, Odissi)", "Indian languages",
-    "famous Indian monuments (Taj Mahal, Red Fort, Qutub Minar, Gateway of India)",
-    // Sports
-    "Indian cricket legends", "Indian Olympic medalists", "Indian hockey history",
-    // Constitution & Government
+    "classical dances", "Indian languages", "famous Indian monuments",
+    "Indian cricket legends", "Indian Olympic medalists",
     "Indian constitution facts", "fundamental rights", "Indian presidents and prime ministers",
-    // Economy & Awards
-    "Bharat Ratna awardees", "Indian currencies and RBI"
+    "Bharat Ratna awardees"
   ];
 
-  const prompt = `You are a GK quiz generator for Indian school students (ages 8–16). You LOVE India and know everything about it.
+  const diffMap = {
+    1: { label: 'Easy',        desc: 'Very simple, basic facts every 5th grader knows. Short clear questions, obvious wrong options.' },
+    2: { label: 'Easy-Medium', desc: 'Simple to moderate. Mix of basic and slightly tricky questions.' },
+    3: { label: 'Medium',      desc: 'Moderate difficulty. Some questions need thinking. Plausible distractors.' },
+    4: { label: 'Medium-Hard', desc: 'Harder questions. Specific dates, lesser-known facts, tricky distractors.' },
+    5: { label: 'Hard',        desc: 'Challenging. Deep knowledge needed. Very close/tricky options. Specific details required.' }
+  };
+  const diff = diffMap[Math.min(5, Math.max(1, difficultyLevel || 1))];
 
-Generate exactly ${qty} multiple-choice questions on these topics: ${topics.join(', ')}.
+  // Build seen-questions block as plain string (no template literals inside)
+  let seenBlock = '';
+  if (seenQs && seenQs.size > 0) {
+    const list = [...seenQs].slice(-80).map((q, i) => (i + 1) + '. ' + q).join('\n');
+    seenBlock = 'ALREADY ASKED — NEVER generate any of these questions again:\n' + list + '\nYou MUST generate completely different questions.';
+  }
 
-STRICT DISTRIBUTION — this is mandatory:
-✅ ${indiaQty} questions MUST be 100% about INDIA. Draw from these India areas:
-   ${indiaPool.join(' | ')}
-🌍 Only ${worldQty} question(s) may cover important world topics.
-
-DO NOT repeat topics. Spread India questions across geography, history, science, culture, sports, and symbols.
-
-For EVERY question provide:
-- explanation: 2–3 sentences, factual, fun, with a surprising or interesting detail
-- imageQuery: 3–5 words for a safe educational image
-- videoId: real 11-character YouTube video ID of an educational video on this exact topic
-
-Return ONLY a valid JSON array. No markdown, no code fences, no extra text.
-Structure:
-{
-  "topic": "Science & Space",
-  "question": "Which was India's first mission to Mars?",
-  "options": ["Chandrayaan-1", "Mangalyaan", "Gaganyaan", "Aditya-L1"],
-  "answer": "Mangalyaan",
-  "explanation": "Mangalyaan, also called Mars Orbiter Mission, was launched by ISRO in 2013 and reached Mars in 2014. India became the first country to reach Mars on its very first attempt, and did so at a record low cost of just ₹450 crore.",
-  "imageQuery": "ISRO Mangalyaan Mars mission India",
-  "videoId": "FzCsDVex_0s"
-}
-
-Rules:
-1. Exactly ${qty} questions. Exactly ${indiaQty} must be India-only.
-2. 4 plausible options each, only one correct.
-3. Age-appropriate, no politics/religion controversies.
-4. Mix easy, medium, and hard questions.
-5. ONLY return the JSON array.`;
+  const prompt = [
+    'You are a GK quiz generator for Indian school students. You LOVE India.',
+    '',
+    'Generate exactly ' + qty + ' multiple-choice questions on: ' + topics.join(', ') + '.',
+    '',
+    'DIFFICULTY: ' + diff.label + ' — ' + diff.desc,
+    '',
+    'DISTRIBUTION (mandatory):',
+    '- ' + indiaQty + ' questions: 100% about INDIA (draw from: ' + indiaPool.join(' | ') + ')',
+    '- ' + worldQty + ' question(s): important world topics only',
+    '',
+    seenBlock,
+    '',
+    'For EVERY question provide:',
+    '- explanation: 2-3 sentences, factual, with a surprising detail',
+    '',
+    'Return ONLY a valid JSON array. No markdown, no code fences.',
+    'Each item: { "topic": "...", "question": "...", "options": ["A","B","C","D"], "answer": "...", "explanation": "..." }',
+    '',
+    'Rules:',
+    '1. Exactly ' + qty + ' questions. Exactly ' + indiaQty + ' India-only.',
+    '2. 4 plausible options, only one correct.',
+    '3. Age-appropriate. Difficulty: ' + diff.label + '.',
+    '4. NEVER repeat a question from the ALREADY ASKED list.',
+    '5. ONLY return the JSON array.'
+  ].join('\n');
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -1024,19 +1167,203 @@ Rules:
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `API error ${res.status}`);
+    const errBody = await res.json().catch(() => ({}));
+    if (res.status === 429 || errBody?.type === 'exceeded_limit' || errBody?.error?.type === 'rate_limit_error') {
+      const resets = errBody?.resetsAt;
+      let msg = "You've used up your AI quota for now.";
+      if (resets) {
+        const rt = new Date(resets * 1000);
+        msg += ' Try again after ' + rt.getHours().toString().padStart(2,'0') + ':' + rt.getMinutes().toString().padStart(2,'0') + '.';
+      } else {
+        msg += ' Please wait a few hours and try again.';
+      }
+      throw new Error('⏳ ' + msg);
+    }
+    throw new Error(errBody?.error?.message || 'API error ' + res.status);
   }
 
-  const data = await res.json();
-  const raw = data.content.find(b => b.type === 'text')?.text || '';
-  const clean = raw.replace(/```json|```/gi, '').trim();
-  const parsed = JSON.parse(clean);
+  const data  = await res.json();
+  const raw   = data.content.find(b => b.type === 'text')?.text || '';
+  const clean = raw.replace(/^```[\w]*\n?/gm, '').replace(/^```$/gm, '').trim();
+
+  let parsed;
+  try {
+    parsed = JSON.parse(clean);
+  } catch(e) {
+    throw new Error('Could not parse quiz response. Please try again.');
+  }
   if (!Array.isArray(parsed) || parsed.length < 1) throw new Error('No questions returned.');
-  return parsed;
+
+  // Client-side dedup: remove any questions the AI still repeated
+  const unique = parsed.filter(q => {
+    const key = q.question.trim().toLowerCase();
+    if (seenQs && seenQs.has(key)) return false;
+    return true;
+  });
+
+  // Add new questions to seen set and persist
+  if (seenQs) {
+    unique.forEach(q => seenQs.add(q.question.trim().toLowerCase()));
+    saveSet('tq_gk_seen', seenQs);
+  }
+
+  if (unique.length === 0) throw new Error('All questions were repeats. Press Ctrl+backtick to reset for fresh questions.');
+  return unique;
 }
 
 const LETTERS = ['A','B','C','D'];
+
+
+
+function showToast(msg, duration=2200) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ══════════════════════════════════════════
+// ANSWER IMAGE MAP
+// Maps keywords in answers to emoji visuals
+// ══════════════════════════════════════════
+const ANSWER_IMAGE_MAP = [
+  // Indian monuments
+  { keys:['taj mahal','taj'],               emoji:'🕌', label:'Taj Mahal, Agra' },
+  { keys:['red fort','lal qila'],           emoji:'🏯', label:'Red Fort, Delhi' },
+  { keys:['qutub minar','qutb'],            emoji:'🗼', label:'Qutub Minar, Delhi' },
+  { keys:['gateway of india'],              emoji:'🏛️', label:'Gateway of India, Mumbai' },
+  { keys:['india gate'],                    emoji:'🏛️', label:'India Gate, Delhi' },
+  { keys:['golden temple','harmandir'],     emoji:'✨', label:'Golden Temple, Amritsar' },
+  { keys:['lotus temple'],                  emoji:'🪷', label:'Lotus Temple, Delhi' },
+  { keys:['charminar'],                     emoji:'🕌', label:'Charminar, Hyderabad' },
+  // Countries & Capitals
+  { keys:['new delhi','delhi'],             emoji:'🇮🇳', label:'New Delhi — Capital of India' },
+  { keys:['mumbai','bombay'],               emoji:'🌆', label:'Mumbai, India' },
+  { keys:['washington','washington d.c.'],  emoji:'🇺🇸', label:'Washington D.C., USA' },
+  { keys:['london'],                        emoji:'🇬🇧', label:'London, United Kingdom' },
+  { keys:['paris'],                         emoji:'🗼', label:'Paris, France' },
+  { keys:['beijing'],                       emoji:'🇨🇳', label:'Beijing, China' },
+  { keys:['moscow'],                        emoji:'🇷🇺', label:'Moscow, Russia' },
+  { keys:['tokyo'],                         emoji:'🇯🇵', label:'Tokyo, Japan' },
+  { keys:['canberra'],                      emoji:'🇦🇺', label:'Canberra, Australia' },
+  { keys:['ottawa'],                        emoji:'🇨🇦', label:'Ottawa, Canada' },
+  { keys:['berlin'],                        emoji:'🇩🇪', label:'Berlin, Germany' },
+  { keys:['rome'],                          emoji:'🇮🇹', label:'Rome, Italy' },
+  // Indian rivers
+  { keys:['ganga','ganges'],                emoji:'🌊', label:'River Ganga' },
+  { keys:['yamuna'],                        emoji:'💧', label:'River Yamuna' },
+  { keys:['brahmaputra'],                   emoji:'🌊', label:'River Brahmaputra' },
+  { keys:['godavari'],                      emoji:'💧', label:'River Godavari' },
+  // Animals
+  { keys:['tiger','bengal tiger'],          emoji:'🐯', label:'Bengal Tiger — National Animal of India' },
+  { keys:['lion','asiatic lion'],           emoji:'🦁', label:'Asiatic Lion' },
+  { keys:['elephant','indian elephant'],    emoji:'🐘', label:'Indian Elephant' },
+  { keys:['peacock','indian peafowl'],      emoji:'🦚', label:'Peacock — National Bird of India' },
+  { keys:['cobra','king cobra'],            emoji:'🐍', label:'King Cobra' },
+  { keys:['dolphin','gangetic dolphin'],    emoji:'🐬', label:'Gangetic Dolphin' },
+  { keys:['cow'],                           emoji:'🐄', label:'Cow' },
+  { keys:['crocodile','gharial'],           emoji:'🐊', label:'Gharial / Crocodile' },
+  { keys:['snow leopard'],                  emoji:'🐆', label:'Snow Leopard' },
+  { keys:['rhino','one-horned rhinoceros'], emoji:'🦏', label:'One-Horned Rhinoceros' },
+  // Space & Science
+  { keys:['mangalyaan','mars orbiter'],     emoji:'🚀', label:'Mangalyaan — ISRO Mars Mission' },
+  { keys:['chandrayaan'],                   emoji:'🌕', label:'Chandrayaan — Moon Mission' },
+  { keys:['gaganyaan'],                     emoji:'👨‍🚀', label:'Gaganyaan — India Human Spaceflight' },
+  { keys:['aditya'],                        emoji:'☀️', label:'Aditya-L1 — Solar Mission' },
+  { keys:['moon'],                          emoji:'🌕', label:'The Moon' },
+  { keys:['mars'],                          emoji:'🔴', label:'Planet Mars' },
+  { keys:['sun'],                           emoji:'☀️', label:'The Sun' },
+  { keys:['earth'],                         emoji:'🌍', label:'Planet Earth' },
+  { keys:['saturn'],                        emoji:'🪐', label:'Planet Saturn' },
+  { keys:['jupiter'],                       emoji:'🟠', label:'Planet Jupiter' },
+  { keys:['dna'],                           emoji:'🧬', label:'DNA Double Helix' },
+  { keys:['telescope'],                     emoji:'🔭', label:'Telescope' },
+  { keys:['microscope'],                    emoji:'🔬', label:'Microscope' },
+  // Famous people
+  { keys:['mahatma gandhi','gandhi'],       emoji:'🕊️', label:'Mahatma Gandhi' },
+  { keys:['bhagat singh'],                  emoji:'✊', label:'Bhagat Singh' },
+  { keys:['subhas chandra bose','bose'],    emoji:'⚔️', label:'Netaji Subhas Chandra Bose' },
+  { keys:['rani laxmibai','laxmibai'],      emoji:'⚔️', label:'Rani Lakshmibai of Jhansi' },
+  { keys:['jawaharlal nehru','nehru'],      emoji:'🌹', label:'Jawaharlal Nehru' },
+  { keys:['apj abdul kalam','kalam'],       emoji:'🚀', label:'Dr. APJ Abdul Kalam' },
+  { keys:['cv raman','c.v. raman'],         emoji:'🔬', label:'Sir C.V. Raman' },
+  { keys:['homi bhabha'],                   emoji:'⚛️', label:'Homi J. Bhabha' },
+  { keys:['sachin tendulkar','sachin'],     emoji:'🏏', label:'Sachin Tendulkar' },
+  { keys:['virat kohli','kohli'],           emoji:'🏏', label:'Virat Kohli' },
+  { keys:['ms dhoni','dhoni'],              emoji:'🏏', label:'MS Dhoni' },
+  { keys:['pv sindhu','sindhu'],            emoji:'🏸', label:'PV Sindhu' },
+  { keys:['neeraj chopra','neeraj'],        emoji:'🥇', label:'Neeraj Chopra — Olympic Gold' },
+  { keys:['einstein','albert einstein'],    emoji:'🧠', label:'Albert Einstein' },
+  { keys:['newton'],                        emoji:'🍎', label:'Isaac Newton' },
+  { keys:['shakespeare'],                   emoji:'📜', label:'William Shakespeare' },
+  // Indian states & geography
+  { keys:['himalayas','himalaya'],          emoji:'🏔️', label:'The Himalayas' },
+  { keys:['western ghats'],                 emoji:'⛰️', label:'Western Ghats' },
+  { keys:['thar desert'],                   emoji:'🏜️', label:'Thar Desert, Rajasthan' },
+  { keys:['andaman'],                       emoji:'🏝️', label:'Andaman & Nicobar Islands' },
+  { keys:['kashmir'],                       emoji:'🏔️', label:'Kashmir — Paradise on Earth' },
+  { keys:['kerala'],                        emoji:'🌴', label:"Kerala — God's Own Country" },
+  { keys:['rajasthan'],                     emoji:'🏰', label:'Rajasthan' },
+  { keys:['goa'],                           emoji:'🏖️', label:'Goa' },
+  // National symbols
+  { keys:['lotus','nelumbo nucifera'],      emoji:'🪷', label:'Lotus — National Flower of India' },
+  { keys:['mango'],                         emoji:'🥭', label:'Mango — National Fruit of India' },
+  { keys:['banyan','ficus benghalensis'],   emoji:'🌳', label:'Banyan — National Tree of India' },
+  { keys:['hockey','field hockey'],         emoji:'🏑', label:'Hockey — National Sport of India' },
+  { keys:['rupee','₹'],                     emoji:'💰', label:'Indian Rupee' },
+  // Sports
+  { keys:['cricket'],                       emoji:'🏏', label:'Cricket' },
+  { keys:['football','soccer'],             emoji:'⚽', label:'Football' },
+  { keys:['badminton'],                     emoji:'🏸', label:'Badminton' },
+  { keys:['tennis'],                        emoji:'🎾', label:'Tennis' },
+  { keys:['chess'],                         emoji:'♟️', label:'Chess — Originated in India' },
+  { keys:['kabaddi'],                       emoji:'🤸', label:'Kabaddi' },
+  // Festivals
+  { keys:['diwali','deepawali'],            emoji:'🪔', label:'Diwali — Festival of Lights' },
+  { keys:['holi'],                          emoji:'🎨', label:'Holi — Festival of Colors' },
+  { keys:['eid'],                           emoji:'🌙', label:'Eid' },
+  { keys:['christmas'],                     emoji:'🎄', label:'Christmas' },
+  { keys:['navratri','durga puja'],         emoji:'🙏', label:'Navratri / Durga Puja' },
+  // General fallbacks by topic
+  { keys:['photosynthesis'],                emoji:'🌿', label:'Photosynthesis' },
+  { keys:['water','h2o'],                   emoji:'💧', label:'Water' },
+  { keys:['oxygen'],                        emoji:'⚗️', label:'Oxygen' },
+  { keys:['carbon dioxide'],                emoji:'🌫️', label:'Carbon Dioxide' },
+  { keys:['gravity'],                       emoji:'🍎', label:'Gravity' },
+  { keys:['rainbow'],                       emoji:'🌈', label:'Rainbow' },
+  { keys:['volcano'],                       emoji:'🌋', label:'Volcano' },
+  { keys:['earthquake'],                    emoji:'🌍', label:'Earthquake' },
+];
+
+function findAnswerImage(answer) {
+  const lower = answer.toLowerCase().trim();
+  for (const entry of ANSWER_IMAGE_MAP) {
+    for (const key of entry.keys) {
+      if (lower.includes(key) || key.includes(lower)) {
+        return entry;
+      }
+    }
+  }
+  return null;
+}
+
+function updateDifficultyBadge() {
+  const diffLabels = ['','Easy 🟢','Easy-Med 🟡','Medium 🟠','Med-Hard 🔴','Hard 🔥'];
+  const el = document.getElementById('gk-diff-badge');
+  if (el) el.textContent = `Level: ${diffLabels[gkDifficulty]}`;
+  // Show streak fire if 3+ in a row
+  const streakEl = document.getElementById('gk-streak');
+  if (streakEl) {
+    if (gkStreak >= 3) {
+      streakEl.textContent = `🔥 ${gkStreak} streak!`;
+      streakEl.style.display = 'inline-block';
+    } else {
+      streakEl.style.display = 'none';
+    }
+  }
+}
 
 function gkRender() {
   const q = gkQuestions[gkCurrent];
@@ -1050,23 +1377,6 @@ function gkRender() {
   // Card reset
   const card = document.getElementById('gk-qcard');
   card.classList.remove('correct-card', 'wrong-card');
-
-  // Image
-  const imgWrap = document.getElementById('gk-img-wrap');
-  const img     = document.getElementById('gk-img');
-  const imgLoad = document.getElementById('gk-img-loading');
-  if (q.imageQuery) {
-    imgWrap.classList.add('has-image');
-    imgLoad.style.display = 'flex';
-    img.style.display = 'none';
-    // Use Unsplash for reliable, safe, free images
-    const query = encodeURIComponent(q.imageQuery);
-    img.src = `https://source.unsplash.com/800x400/?${query}`;
-    img.alt = q.imageQuery;
-  } else {
-    imgWrap.classList.remove('has-image');
-  }
-
   // Options
   const grid = document.getElementById('gk-options');
   grid.innerHTML = '';
@@ -1080,13 +1390,13 @@ function gkRender() {
 
   // Explanation + video hidden
   document.getElementById('gk-exp').style.display = 'none';
+  document.getElementById('gk-answer-image').style.display = 'none';
   document.getElementById('gk-next').style.display = 'none';
   document.getElementById('gk-nexthint').style.display = 'none';
-  // Clear video src to stop previous video
-  document.getElementById('gk-video').src = '';
-  document.getElementById('gk-video-wrap').classList.remove('has-video');
+
 
   gkAnswered = false;
+  updateDifficultyBadge();
 }
 
 function gkSelect(chosen, btn, q) {
@@ -1107,11 +1417,17 @@ function gkSelect(chosen, btn, q) {
   if (isCorrect) {
     card.classList.add('correct-card');
     gkScore++;
+    gkSessionScore++;
+    gkStreak++;
     document.getElementById('gk-score').textContent = gkScore;
   } else {
     btn.classList.add('wrong-opt');
     card.classList.add('wrong-card');
+    gkStreak = 0;
+    gkSessionScore = Math.max(0, gkSessionScore - 0); // don't penalise cumulative
   }
+  gkSessionTotal++;
+  updateDifficultyBadge();
 
   // Show explanation
   const exp = document.getElementById('gk-exp');
@@ -1120,15 +1436,21 @@ function gkSelect(chosen, btn, q) {
   document.getElementById('gk-exp-verdict').textContent = isCorrect ? 'Correct!' : `Not quite — the answer is ${correct}`;
   document.getElementById('gk-exp-text').textContent    = q.explanation || '';
 
-  // YouTube video
-  if (q.videoId && q.videoId.length === 11) {
-    const vw = document.getElementById('gk-video-wrap');
-    vw.classList.add('has-video');
-    document.getElementById('gk-video').src =
-      `https://www.youtube.com/embed/${q.videoId}?rel=0&modestbranding=1`;
-  }
+
 
   exp.style.display = 'block';
+
+  // Show answer image if we have one for this answer
+  const imgMatch = findAnswerImage(correct);
+  const ansImgEl = document.getElementById('gk-answer-image');
+  if (imgMatch) {
+    document.getElementById('gk-answer-emoji').textContent = imgMatch.emoji;
+    document.getElementById('gk-answer-label').textContent = imgMatch.label;
+    ansImgEl.style.display = 'block';
+  } else {
+    ansImgEl.style.display = 'none';
+  }
+
   document.getElementById('gk-next').style.display = 'block';
   document.getElementById('gk-nexthint').style.display = 'block';
 }
@@ -1138,6 +1460,8 @@ function gkNext() {
   if (gkCurrent >= gkQuestions.length) gkShowResults();
   else gkRender();
 }
+
+
 
 function gkShowResults() {
   document.getElementById('gk-quiz').style.display = 'none';
@@ -1160,8 +1484,34 @@ function gkShowResults() {
 
   document.getElementById('gk-trophy').textContent = trophy;
   document.getElementById('gk-rlabel').textContent = label;
+  // Adaptive difficulty: adjust based on this round's performance
+  const prevDiff = gkDifficulty;
+  if (pct >= 80 && gkDifficulty < 5) {
+    gkDifficulty = Math.min(5, gkDifficulty + 1);
+  } else if (pct < 40 && gkDifficulty > 1) {
+    gkDifficulty = Math.max(1, gkDifficulty - 1);
+  }
+
+  const diffLabels = ['','Easy 🟢','Easy-Med 🟡','Medium 🟠','Med-Hard 🔴','Hard 🔥'];
   const topics = getSelectedTopics();
-  document.getElementById('gk-recap').innerHTML = `Topics: <strong>${topics.join(' · ')}</strong> · ${total} questions`;
+  document.getElementById('gk-recap').innerHTML =
+    `Topics: <strong>${topics.join(' · ')}</strong> · ${total} questions · Level: <strong>${diffLabels[prevDiff]}</strong>`;
+
+  // Show next level hint
+  const nextLevelEl = document.getElementById('gk-next-level');
+  if (nextLevelEl) {
+    if (gkDifficulty > prevDiff) {
+      nextLevelEl.textContent = `🔼 Level up! Next round: ${diffLabels[gkDifficulty]}`;
+      nextLevelEl.style.color = 'var(--accent3)';
+    } else if (gkDifficulty < prevDiff) {
+      nextLevelEl.textContent = `🔽 Adjusting difficulty. Next round: ${diffLabels[gkDifficulty]}`;
+      nextLevelEl.style.color = 'var(--accent4)';
+    } else {
+      nextLevelEl.textContent = `➡️ Staying at ${diffLabels[gkDifficulty]} — keep going!`;
+      nextLevelEl.style.color = 'var(--muted)';
+    }
+    nextLevelEl.style.display = 'block';
+  }
   setTimeout(() => document.getElementById('gk-retry').focus(), 60);
 }
 
@@ -1173,14 +1523,43 @@ async function gkRetry() {
 
 function gkNewSetup() {
   document.getElementById('gk-results').style.display = 'none';
+  document.getElementById('gk-quiz').style.display = 'none';
   document.getElementById('gk-setup').style.display = 'block';
   gkScreen = 'setup';
+}
+function gkHardReset() {
+  // Full restart — stop any running quiz, reset difficulty too
+  gkQuestions = []; gkCurrent = 0; gkScore = 0; gkAnswered = false;
+  gkDifficulty = 1; gkStreak = 0; gkSessionTotal = 0; gkSessionScore = 0;
+  gkAskedQuestions.clear();
+  document.getElementById('gk-quiz').style.display    = 'none';
+  document.getElementById('gk-results').style.display = 'none';
+  document.getElementById('gk-loading').classList.remove('active');
+  document.getElementById('gk-setup').style.display   = 'block';
+  gkScreen = 'setup';
+  updateDifficultyBadge();
+  showToast('♻️ GK quiz reset! Difficulty reset to Easy.');
 }
 
 // ══════════════════════════════════════════
 // UNIFIED ENTER KEY HANDLER
 // ══════════════════════════════════════════
 document.addEventListener('keydown', function(e) {
+
+  // ── Ctrl + key shortcuts ─────────────────────────────────────
+  if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+    if (e.key === '0')  { e.preventDefault(); goHome(); return; }
+    if (e.key === '1')  { e.preventDefault(); goSection('tables'); return; }
+    if (e.key === '2')  { e.preventDefault(); goSection('gk'); return; }
+    // Ctrl+` = restart current quiz from scratch
+    if (e.key === '`')  {
+      e.preventDefault();
+      if (appScreen === 'tables') { tablesHardReset(); return; }
+      if (appScreen === 'gk')     { gkHardReset();     return; }
+      return;
+    }
+  }
+
   if (e.key !== 'Enter') return;
 
   if (appScreen === 'home') return;
